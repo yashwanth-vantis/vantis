@@ -1,0 +1,282 @@
+/* ==========================================================================
+   PANRIGHT STUDIOS — tokens.css
+   ==========================================================================
+
+   FONTS
+
+   Headline options (Google Fonts)
+   1. Archivo (RECOMMENDED) — variable width axis: expanded caps read as a
+      title card in a 2.39:1 frame; normal width covers every other heading.
+   2. Newsreader — light editorial serif with optical sizes; quiet, literary,
+      suits a script-first product.
+   3. Bodoni Moda — high-contrast Didone; the most "luxury", the least technical.
+   Why Archivo: one family gives the wide, steel title-card voice and avoids
+   the serif-headline look every templated site now shares.
+
+   Body:  Hanken Grotesk — wider and warmer than Inter Tight, so 16–18px copy
+          holds up on a near-black ground without reading as a dashboard.
+   Label: IBM Plex Mono — engineered, slate-and-timecode character; Geist Mono
+          signals developer tooling.
+
+   Weights to load
+     Archivo          variable, wght 400–600, wdth 100–125
+     Hanken Grotesk   400, 500
+     IBM Plex Mono    400, 500
+
+   https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..600&family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap
+   (Self-host via Fontsource for S3/CloudFront; its variable build is named
+   "Archivo Variable", already in the stack below.)
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     COLOR — 8 tokens
+     Contrast (WCAG 2.x)            on bg    on surface   on raised
+       text-primary  #E4E9EE        16.33    15.50        14.18   AAA
+       text-muted    #A7B3C0         9.36     8.88         8.13   AAA
+       text-subtle   #76879A         5.42     5.14         4.71   AA
+       accent        #D29B55         8.13     7.72         7.06   AAA
+       bg on accent (button label)   8.13                         AAA
+     border #232D39 is decorative (1.43 on bg); never the only cue for state.
+     ------------------------------------------------------------------------ */
+  --color-bg:            #06090D; /* background: blue-cast near-black */
+  --color-surface:       #0C1118; /* surface: alternate section band */
+  --color-raised:        #141B24; /* surface-raised: cards, inputs, hover fill */
+  --color-border:        #232D39; /* border: hairlines, frame lines */
+  --color-text-subtle:   #76879A; /* steel: labels, timecode, captions */
+  --color-text-muted:    #A7B3C0; /* haze: secondary copy */
+  --color-text-primary:  #E4E9EE; /* cold white: headings, body */
+  --color-accent:        #D29B55; /* tungsten: the single warm highlight */
+
+  /* Derived (no new hues) */
+  --color-on-accent:     var(--color-bg);
+  --color-border-strong: rgb(118 135 154 / 0.36);
+  --color-scrim:         rgb(6 9 13 / 0.64); /* over footage, under text */
+
+  /* ------------------------------------------------------------------------
+     TYPE
+     ------------------------------------------------------------------------ */
+  --font-headline: "Archivo", "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-body:     "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-label:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Fluid scale: 360px → 1440px viewport */
+  --text-display: clamp(2.25rem, 0.833rem + 6.296vw, 6.5rem);    /* 36 → 104; words ≤ 10 letters */
+  --text-h1:      clamp(2rem, 1.167rem + 3.704vw, 4.5rem);       /* 32 → 72  */
+  --text-h2:      clamp(1.75rem, 1.333rem + 1.852vw, 3rem);      /* 28 → 48  */
+  --text-h3:      clamp(1.375rem, 1.167rem + 0.926vw, 2rem);     /* 22 → 32  */
+  --text-h4:      clamp(1.125rem, 1.042rem + 0.37vw, 1.375rem);  /* 18 → 22  */
+  --text-lead:    clamp(1.125rem, 1.042rem + 0.37vw, 1.375rem);  /* 18 → 22  */
+  --text-body:    clamp(1rem, 0.958rem + 0.185vw, 1.125rem);     /* 16 → 18  */
+  --text-small:   0.875rem;                                      /* 14       */
+  --text-label:   0.75rem;                                       /* 12       */
+
+  --leading-display: 0.96;
+  --leading-h1:      1.04;
+  --leading-h2:      1.1;
+  --leading-h3:      1.2;
+  --leading-h4:      1.3;
+  --leading-lead:    1.5;
+  --leading-body:    1.6;
+  --leading-small:   1.5;
+  --leading-label:   1.4;
+
+  --tracking-display: 0.01em;   /* expanded caps */
+  --tracking-h1:      -0.01em;
+  --tracking-h2:      0;
+  --tracking-h3:      0;
+  --tracking-h4:      0;
+  --tracking-lead:    0;
+  --tracking-body:    0;
+  --tracking-small:   0.005em;
+  --tracking-label:   0.08em;   /* uppercase mono */
+
+  --weight-display: 500;
+  --weight-heading: 500;
+  --weight-body:    400;
+  --weight-strong:  500;
+  --weight-label:   400;
+
+  --width-display: 125%;  /* font-stretch; display is uppercase */
+  --width-heading: 100%;  /* h1–h4, sentence case */
+
+  --measure: 62ch;        /* max line length for body copy */
+
+  /* ------------------------------------------------------------------------
+     SPACING — 8-point scale
+     ------------------------------------------------------------------------ */
+  --space-0:  0;
+  --space-1:  0.25rem;  /*   4  half step, optical fixes only */
+  --space-2:  0.5rem;   /*   8 */
+  --space-3:  1rem;     /*  16 */
+  --space-4:  1.5rem;   /*  24 */
+  --space-5:  2rem;     /*  32 */
+  --space-6:  3rem;     /*  48 */
+  --space-7:  4rem;     /*  64 */
+  --space-8:  6rem;     /*  96 */
+  --space-9:  8rem;     /* 128 */
+  --space-10: 10rem;    /* 160 */
+
+  --section-y:       clamp(4rem, 2rem + 8.889vw, 10rem);  /* 64 → 160 */
+  --section-y-tight: clamp(3rem, 2rem + 4.444vw, 6rem);   /* 48 → 96  */
+  --stack-heading:   var(--space-4);  /* heading → copy */
+  --stack-block:     var(--space-6);  /* copy → next block */
+
+  /* Containers */
+  --container-max:  82rem;   /* 1312  standard content */
+  --container-wide: 100rem;  /* 1600  full-frame media */
+  --container-text: 42rem;   /*  672  long-form reading */
+
+  /* Grid — mobile first (< 640px) */
+  --grid-columns: 4;
+  --grid-gutter:  1rem;    /* 16 */
+  --grid-margin:  1.5rem;  /* 24 */
+
+  /* ------------------------------------------------------------------------
+     RADIUS, BORDERS, SHADOWS
+     ------------------------------------------------------------------------ */
+  --radius-0: 0;     /* frames, media, sections */
+  --radius-1: 2px;   /* buttons, inputs, tags */
+  --radius-2: 4px;   /* glass cards */
+
+  --border-width:  1px;
+  --border-hair:   1px solid var(--color-border);
+  --border-strong: 1px solid var(--color-border-strong);
+  --focus-ring:    2px solid var(--color-accent);
+  --focus-offset:  3px;
+
+  --shadow-none:  none;
+  --shadow-glass: inset 0 1px 0 rgb(228 233 238 / 0.06),
+                  0 24px 48px -24px rgb(0 0 0 / 0.7);  /* the only shadow */
+
+  /* ------------------------------------------------------------------------
+     GLASS — recipe values (applied by .glass-nav / .glass-card below)
+     Text contrast on glass over footage graded to #59626B or darker:
+       nav   text-primary 13.12   text-muted 7.52
+       card  text-primary  9.43   text-muted 5.41
+     ------------------------------------------------------------------------ */
+  --glass-nav-fill:      rgb(6 9 13 / 0.72);
+  --glass-nav-blur:      blur(20px) saturate(120%);
+  --glass-nav-border:    1px solid rgb(228 233 238 / 0.08);
+  --glass-nav-fallback:  rgb(6 9 13 / 0.96);
+
+  --glass-card-fill:     rgb(20 27 36 / 0.56);
+  --glass-card-blur:     blur(28px) saturate(115%);
+  --glass-card-border:   1px solid rgb(228 233 238 / 0.10);
+  --glass-card-fallback: rgb(20 27 36 / 0.96);
+
+  /* Film-grain noise, ~3% white, tiled 160px */
+  --glass-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.12 0 0 0 -0.03'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /* ------------------------------------------------------------------------
+     MOTION
+     ------------------------------------------------------------------------ */
+  --duration-instant: 120ms;   /* press, focus */
+  --duration-fast:    200ms;   /* hover colour and border */
+  --duration-base:    320ms;   /* underline draw, nav state */
+  --duration-slow:    640ms;   /* reveal */
+  --duration-pan:     1200ms;  /* the pan right: frame and media travel */
+  --duration-light:   16000ms; /* hero light: one pass, then holds */
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);     /* GSAP: expo.out */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);    /* GSAP: cubic.inOut */
+  --ease-pan:    cubic-bezier(0.33, 0, 0.15, 1);    /* slow start, long settle */
+
+  /* Hover spec
+     - Colour, border and background only: --duration-fast, --ease-out.
+     - Links: 1px underline draws left → right (scaleX 0 → 1, origin left),
+       --duration-base, --ease-out.
+     - Media inside a frame: translateX(calc(var(--hover-pan) * -1)),
+       --duration-pan, --ease-pan. No scale, lift, glow or tilt. */
+  --hover-pan: 1.5%;
+
+  /* Reveal spec (GSAP ScrollTrigger, once, start "top 85%")
+     - From: opacity 0, translateX(var(--reveal-distance)). To: opacity 1, 0.
+     - Content settles right → left, as a frame does when the camera pans right.
+     - --duration-slow, --ease-out, stagger --reveal-stagger, max 6 items. */
+  --reveal-distance: 24px;
+  --reveal-stagger:  80ms;
+}
+
+/* Grid — tablet (640–1023px) */
+@media (min-width: 40rem) {
+  :root {
+    --grid-columns: 8;
+    --grid-gutter:  1.5rem;  /* 24 */
+    --grid-margin:  2.5rem;  /* 40 */
+  }
+}
+
+/* Grid — desktop (≥ 1024px) */
+@media (min-width: 64rem) {
+  :root {
+    --grid-columns: 12;
+    --grid-gutter:  1.5rem;  /* 24 */
+    --grid-margin:  4rem;    /* 64 */
+  }
+}
+
+/* Grid — wide (≥ 1440px) */
+@media (min-width: 90rem) {
+  :root {
+    --grid-gutter: 2rem;     /* 32 */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   GLASS — default is the no-backdrop-filter fallback; blur is the enhancement
+   -------------------------------------------------------------------------- */
+.glass-nav {
+  background-color: var(--glass-nav-fallback);
+  background-image: var(--glass-noise);
+  border-bottom: var(--glass-nav-border);
+}
+
+.glass-card {
+  background-color: var(--glass-card-fallback);
+  background-image: var(--glass-noise);
+  border: var(--glass-card-border);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-glass);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-nav {
+    background-color: var(--glass-nav-fill);
+    -webkit-backdrop-filter: var(--glass-nav-blur);
+    backdrop-filter: var(--glass-nav-blur);
+  }
+
+  .glass-card {
+    background-color: var(--glass-card-fill);
+    -webkit-backdrop-filter: var(--glass-card-blur);
+    backdrop-filter: var(--glass-card-blur);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION
+   In GSAP, gate every tween with gsap.matchMedia("(prefers-reduced-motion: no-preference)").
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0.01ms;
+    --duration-fast:    0.01ms;
+    --duration-base:    0.01ms;
+    --duration-slow:    0.01ms;
+    --duration-pan:     0.01ms;
+    --duration-light:   0.01ms;
+    --reveal-distance:  0px;
+    --reveal-stagger:   0ms;
+    --hover-pan:        0%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

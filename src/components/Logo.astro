@@ -1,0 +1,14 @@
+---
+/** Primary lockup (logo A-c): outlined Archivo wordmark + open frame mark. Uses currentColor. */
+import { WORDMARK_PATH } from "./logo-paths.generated";
+interface Props { class?: string; title?: string }
+const { class: cls = "", title } = Astro.props;
+---
+<svg class={`logo ${cls}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 346 48" fill="currentColor"
+  role={title ? "img" : undefined} aria-label={title} aria-hidden={title ? undefined : "true"} focusable="false">
+  <path d={WORDMARK_PATH} />
+  <path fill-rule="evenodd" d="M290 10h53.02v28H290Z M295 15v18h43.02V15Z" />
+</svg>
+<style>
+  .logo { width: auto; height: 1.25rem; flex: none; }
+</style>

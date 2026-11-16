@@ -1,0 +1,32 @@
+---
+/** <PhaseGrid>: four raised cards (3 cols each), 2 × 2 on tablet. Routes to Services. */
+import { home, phases, noWidow, link } from "../content/site";
+---
+<section class="section surface" aria-labelledby="phases-title">
+  <div class="container">
+    <div class="phases__head" data-reveal>
+      <h2 id="phases-title" class="t-h2">{noWidow(home.phases.headline)}</h2>
+    </div>
+    <ul role="list" class="grid phases__cards" data-reveal-group>
+      {phases.map((p) => (
+        <li class="card phase-card">
+          <p class="t-label" aria-hidden="true">{p.index}</p>
+          <h3 class="t-h4 phase-card__name"><span class="visually-hidden">{p.index} </span>{p.name}</h3>
+          <p class="t-body t-muted">{p.line}</p>
+        </li>
+      ))}
+    </ul>
+    <p class="phases__link" data-reveal>
+      <a class="link-draw" href={link(home.phases.link.href)}><span>{home.phases.link.label}</span></a>
+    </p>
+  </div>
+</section>
+<style>
+  .phases__head { margin-bottom: var(--space-6); }
+  .phases__cards { row-gap: var(--grid-gutter); }
+  .phase-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .phase-card__name { margin-top: var(--space-5); }
+  .phases__link { margin-top: var(--space-5); }
+  @media (min-width: 40rem) { .phase-card { grid-column: span 4; } }
+  @media (min-width: 64rem) { .phase-card { grid-column: span 3; } }
+</style>

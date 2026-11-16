@@ -1,0 +1,49 @@
+---
+/** <PhaseSection>: index + name cols 1–4; headline, copy and three service rows cols 6–12. */
+import { serviceDescriptionPlaceholder, noWidow } from "../content/site";
+interface Props { phase: { index: string; id: string; name: string; line: string; copy: string; services: readonly string[] }; tone: "bg" | "surface" }
+const { phase, tone } = Astro.props;
+---
+<section id={phase.id} class:list={["section", tone]} aria-labelledby={`${phase.id}-title`}>
+  <div class="container grid phase" data-reveal>
+    <div class="phase__id">
+      <p class="t-label" aria-hidden="true">{phase.index}</p>
+      <h2 id={`${phase.id}-title`} class="t-h3 phase__name"><span class="visually-hidden">{phase.index} </span>{phase.name}</h2>
+    </div>
+    <div class="phase__body">
+      <p class="t-h3 phase__line">{noWidow(phase.line)}</p>
+      <p class="t-body t-muted phase__copy">{phase.copy}</p>
+      <ul role="list" class="rows phase__rows">
+        {phase.services.map((s) => (
+          <li class="phase__row">
+            <span class="phase__service">{s}</span>
+            <span class="t-small t-muted">{serviceDescriptionPlaceholder}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .phase { row-gap: var(--space-5); }
+  .phase__name { margin-top: var(--space-2); }
+  .phase__line { max-width: 24ch; }
+  .phase__copy { margin-top: var(--stack-heading); }
+  .phase__rows { margin-top: var(--stack-block); }
+  .phase__row {
+    display: grid;
+    gap: var(--space-1) var(--grid-gutter);
+    padding-block: var(--space-4);
+    min-height: var(--tap);
+  }
+  .phase__service { font-weight: var(--weight-strong); }
+  @media (min-width: 40rem) {
+    .phase__id { grid-column: 1 / span 3; }
+    .phase__body { grid-column: 4 / span 5; }
+  }
+  @media (min-width: 64rem) {
+    .phase__id { grid-column: 1 / span 4; }
+    .phase__body { grid-column: 6 / span 7; }
+    .phase__row { grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); align-items: baseline; }
+  }
+</style>
