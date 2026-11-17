@@ -1,17 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
-import Hero from "../components/Hero.astro";
-import Statement from "../components/Statement.astro";
-import Method from "../components/Method.astro";
-import PhaseGrid from "../components/PhaseGrid.astro";
-import CtaBand from "../components/CtaBand.astro";
-import { seo, home } from "../content/site";
+import PanrightHero from "../components/PanrightHero.astro";
 ---
-<Base title={seo.home.title} description={seo.home.description} path="/">
-  <Hero />
-  <Statement id="premise" label={home.premise.label} headline={home.premise.headline} copy={home.premise.copy} />
-  <Method />
-  <PhaseGrid />
-  <Statement id="principle" variant="principle" headline={home.principle.headline} copy={home.principle.copy} />
-  <CtaBand />
+
+<Base
+  title="Panright Studios: Know the film before the shoot"
+  description="A filmmaking suite for production houses. Validate your film on the page, then carry it through prep, shoot and edit."
+>
+  <PanrightHero />
 </Base>

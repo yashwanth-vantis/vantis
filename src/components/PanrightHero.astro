@@ -1,0 +1,549 @@
+---
+/**
+ * PanrightHero — Home section 1 (page-spec.md), with a looping background video.
+ * Video loop: the one approved exception to usage rule 8 (paired with a pause control).
+ */
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource/hanken-grotesk/400.css";
+import "@fontsource/hanken-grotesk/500.css";
+import "@fontsource/ibm-plex-mono/400.css";
+import "@fontsource/ibm-plex-mono/500.css";
+import { heroVideoUrl } from "../content/site";
+
+// Only a real http(s) URL counts; "" or a [PLACEHOLDER] means "no video".
+const videoUrl = /^https?:\/\//.test(heroVideoUrl) ? heroVideoUrl : "";
+const contactHref = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/contact`;
+---
+<section class="ph" data-ph aria-labelledby="ph-title" data-video-url={videoUrl}>
+  <div class="ph__layer ph__base" aria-hidden="true"></div>
+  <div class="ph__layer ph__light" data-ph-light aria-hidden="true"></div>
+  {videoUrl && (
+    <video class="ph__layer ph__video" data-ph-video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+  )}
+  <div class="ph__layer ph__scrim" aria-hidden="true"></div>
+  <div class="ph__layer ph__grain" aria-hidden="true"></div>
+  <div class="ph__layer ph__fade" aria-hidden="true"></div>
+
+  <div class="ph__content">
+    <div class="ph__stage">
+      <div class="ph__frame" data-ph-frame-compact>
+        <div class="ph__window" data-ph-frame-wide>
+          <p class="ph__slate ph__slate--tl" aria-hidden="true">SC 01 / TK 01</p>
+          <p class="ph__slate ph__slate--tr" aria-hidden="true">2.39 : 1</p>
+          <p class="ph__slate ph__slate--bl" aria-hidden="true">00:00:00:00</p>
+          <p class="ph__slate ph__slate--studio" aria-hidden="true">PANRIGHT STUDIOS</p>
+          <h1 id="ph-title" class="ph__title" data-ph-item>Know the film before the shoot.</h1>
+        </div>
+        <div class="ph__copy">
+          <p class="ph__lead" data-ph-item>Validate your film on the page, not after the audience reacts.</p>
+          <div class="ph__actions" data-ph-item>
+            <a class="ph__btn" href={contactHref} data-ph-cta><span class="ph__line">Start a conversation</span></a>
+            <a class="ph__textlink" href="#phases"><span class="ph__line">See the four phases</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="ph__card glass-card" data-ph-item>
+        <p class="ph__card-label">BEFORE DAY ONE</p>
+        <p class="ph__card-text">The script is tested. Then the money moves.</p>
+      </div>
+    </div>
+  </div>
+
+  {videoUrl && (
+    <button type="button" class="ph__videoctl" data-ph-videoctl hidden>
+      <span class="ph__line" data-ph-videoctl-label>Pause background video</span>
+    </button>
+  )}
+</section>
+
+<style>
+  /* ------------------------------------------------------------ container */
+  .ph {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    isolation: isolate;
+    box-sizing: border-box;
+    margin-top: calc(var(--space-7) * -1); /* sits behind the 64px glass nav */
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: var(--weight-body);
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: left;
+  }
+  @supports (min-height: 100svh) {
+    .ph { min-height: 100svh; }
+  }
+  .ph *, .ph *::before, .ph *::after { box-sizing: border-box; }
+  .ph p, .ph h1 { margin: 0; }
+
+  /* --------------------------------------------------------------- layers */
+  .ph__layer { position: absolute; inset: 0; pointer-events: none; }
+  .ph__base { background: var(--color-bg); }
+  .ph__light {
+    background: radial-gradient(30vw 25vh at 20% 50%, rgb(167 179 192 / 0.10), transparent);
+    transform: translateX(40vw); /* end position: no-JS and reduced motion */
+  }
+  .ph__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out);
+  }
+  .ph__video.is-visible { opacity: 1; }
+  .ph__scrim { background: var(--color-scrim); }
+  .ph__grain { background-image: var(--glass-noise); background-repeat: repeat; }
+  .ph__fade { display: none; }
+
+  /* -------------------------------------------------------------- content */
+  .ph__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: calc(var(--container-max) + 2 * var(--grid-margin));
+    margin-inline: auto;
+    padding-inline: var(--grid-margin);
+  }
+
+  .ph__frame { position: relative; }
+  .ph__window { position: relative; }
+
+  .ph__slate {
+    position: absolute;
+    white-space: nowrap;
+    font-family: var(--font-label);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    font-weight: var(--weight-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .ph__slate--tr { display: none; }
+
+  .ph__title {
+    font-family: var(--font-headline);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--width-display);
+    text-transform: uppercase;
+    text-wrap: balance;
+    color: var(--color-text-primary);
+  }
+
+  .ph__lead {
+    max-width: var(--measure);
+    font-size: var(--text-lead);
+    line-height: var(--leading-lead);
+    letter-spacing: var(--tracking-lead);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+  .ph__actions {
+    margin-top: var(--stack-heading);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+  }
+
+  /* Buttons: underline draws left → right under the label; fill never changes */
+  .ph__btn, .ph__textlink, .ph__videoctl {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--space-6);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ph__btn {
+    justify-content: center;
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-1);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-size: var(--text-body);
+    font-weight: var(--weight-strong);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .ph__textlink {
+    color: var(--color-text-primary);
+    font-size: var(--text-body);
+    font-weight: var(--weight-strong);
+  }
+  .ph__line { position: relative; }
+  .ph__line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--space-1) * -1);
+    height: var(--border-width);
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  @media (hover: hover) {
+    .ph__btn:hover .ph__line::after,
+    .ph__textlink:hover .ph__line::after,
+    .ph__videoctl:hover .ph__line::after { transform: scaleX(1); }
+  }
+  .ph__btn:active .ph__line::after,
+  .ph__textlink:active .ph__line::after,
+  .ph__videoctl:active .ph__line::after { transform: scaleX(1); }
+
+  .ph__btn:focus-visible, .ph__textlink:focus-visible, .ph__videoctl:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+  .ph__textlink:focus-visible, .ph__videoctl:focus-visible { border-radius: var(--radius-1); }
+
+  /* Glass card: never accent, never --color-text-subtle */
+  .ph__card { padding: var(--space-4); }
+  .ph__card-label {
+    font-family: var(--font-label);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    font-weight: var(--weight-label);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .ph__card-text {
+    margin-top: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--color-text-primary);
+  }
+
+  /* Video control (WCAG 2.2.2) */
+  .ph__videoctl {
+    position: absolute;
+    z-index: 2;
+    bottom: var(--space-4);
+    right: var(--grid-margin);
+    padding: 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    font-weight: var(--weight-strong);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .ph__videoctl:hover { color: var(--color-text-primary); }
+  .ph__videoctl[hidden] { display: none; }
+
+  /* -------------------------------------------- < 1024: frame grows with content */
+  @media (max-width: 63.99rem) {
+    .ph__frame {
+      min-height: fit-content;
+      border-top: var(--border-strong);
+      border-bottom: var(--border-strong);
+      padding-block: var(--space-6);
+    }
+    .ph__slate--tl { top: var(--space-3); left: 0; }
+    .ph__slate--bl { bottom: var(--space-3); left: 0; }
+    .ph__slate--studio { bottom: var(--space-3); right: 0; }
+    .ph__copy { margin-top: var(--space-5); }
+    .ph__card { margin-top: var(--space-5); }
+    .ph__window { position: static; container-type: inline-size; }
+    /* three lines maximum: never wider than the frame's text column (8.7em = widest line) */
+    .ph__title { font-size: min(var(--text-display), calc(100cqi / 8.7)); }
+  }
+  /* 640–1023: full outline, --space-7 inset */
+  @media (min-width: 40rem) and (max-width: 63.99rem) {
+    .ph__frame { border: var(--border-strong); padding: var(--space-7); }
+    .ph__slate--tl, .ph__slate--bl { left: var(--space-3); }
+    .ph__slate--studio { right: var(--space-3); }
+  }
+  /* < 640: legibility gradient over the top 60% (one hue, alpha only) */
+  @media (max-width: 39.99rem) {
+    .ph__video { object-position: 62% 50%; }
+    .ph__fade {
+      display: block;
+      inset: 0 0 auto 0;
+      height: 60%;
+      background: linear-gradient(180deg, rgb(6 9 13 / 0.92) 0%, rgb(6 9 13 / 0.75) 55%, rgb(6 9 13 / 0) 100%);
+    }
+  }
+
+  /* ------------------------------------------------- ≥ 1024: the 2.39:1 frame */
+  @media (min-width: 64rem) {
+    .ph {
+      /* Height everything below the frame needs, so the CTA stays above the fold:
+         nav, gap above frame, frame→lead, two lead lines, lead→buttons, button, breathing room. */
+      --ph-reserve: calc(
+        var(--space-7) + var(--space-4) + var(--space-5) + 2 * var(--text-lead) * var(--leading-lead) +
+        var(--stack-heading) + var(--space-6) + var(--space-4)
+      );
+    }
+    .ph__stage {
+      container-type: inline-size;
+      display: grid;
+      grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+      column-gap: var(--grid-gutter);
+      margin-top: var(--space-4);
+      /* Short viewports: the whole stage narrows so the frame keeps 2.39:1 and the
+         primary button stays visible. No effect when the viewport is tall enough. */
+      max-width: max(40rem, min(100%, calc((100svh - var(--ph-reserve)) * 2.39)));
+      margin-inline: auto;
+    }
+    .ph__frame { display: contents; }
+    .ph__window {
+      --ph-col: calc((100cqi - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns));
+      grid-column: 1 / -1;
+      grid-row: 1;
+      aspect-ratio: 2.39;
+      height: auto;
+      border: var(--border-strong);
+      border-radius: var(--radius-0);
+      padding: var(--space-7);
+      display: flex;
+      align-items: flex-end;
+    }
+    .ph__title {
+      /* up to 11 columns from the inset */
+      max-width: calc(100cqi - var(--ph-col) - var(--grid-gutter) - var(--space-7));
+      /* never above the token; never taller than three lines inside the frame;
+         never wider than that 11-column measure (8.7em = widest line of the 3-line wrap,
+         "FILM BEFORE", measured in Archivo at 125%) */
+      font-size: min(
+        var(--text-display),
+        calc((100cqi / 2.39 - 2 * var(--space-7) - 2 * var(--border-width)) / (3 * var(--leading-display))),
+        calc((100cqi - var(--ph-col) - var(--grid-gutter) - var(--space-7)) / 8.7)
+      );
+    }
+    .ph__slate--tl { top: var(--space-3); left: var(--space-3); }
+    .ph__slate--tr { display: block; top: var(--space-3); right: var(--space-3); }
+    .ph__slate--bl { bottom: var(--space-3); left: var(--space-3); }
+    .ph__slate--studio { bottom: var(--space-3); right: calc(4 * var(--ph-col) + 4 * var(--grid-gutter)); }
+
+    .ph__copy {
+      grid-column: 1 / span 6;
+      grid-row: 2;
+      padding-top: var(--space-5);
+    }
+    .ph__card {
+      grid-column: 9 / span 4;
+      grid-row: 2;
+      align-self: start;
+      margin-top: calc(var(--space-5) * -1); /* top edge --space-5 above the frame line */
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  /* ----------------------- initial hidden state: only when JS + motion are on.
+     Fail-safe: if GSAP has not started within 2s, a one-shot CSS fade shows everything. */
+  @keyframes ph-failsafe { to { opacity: 1; } }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .ph:not(.is-animated) [data-ph-item] {
+      opacity: 0;
+      animation: ph-failsafe 1ms linear 2s forwards;
+    }
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (min-width: 64rem) {
+    .ph:not(.is-animated) [data-ph-frame-wide] { opacity: 0; animation: ph-failsafe 1ms linear 2s forwards; }
+  }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) and (max-width: 63.99rem) {
+    .ph:not(.is-animated) [data-ph-frame-compact] { opacity: 0; animation: ph-failsafe 1ms linear 2s forwards; }
+  }
+  /* Keyboard focus never lands on invisible content, even before GSAP starts */
+  .ph:not(.is-animated) [data-ph-item]:focus-within,
+  .ph:not(.is-animated) [data-ph-frame-wide]:focus-within,
+  .ph:not(.is-animated) [data-ph-frame-compact]:focus-within { opacity: 1; animation: none; }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  type Cleanup = () => void;
+  let cleanup: Cleanup | null = null;
+
+  /* ---------------------------------------------------------- token reads */
+  const root = document.documentElement;
+  const token = (name: string) => getComputedStyle(root).getPropertyValue(name).trim();
+  const seconds = (name: string) => {
+    const v = token(name);
+    return v.endsWith("ms") ? parseFloat(v) / 1000 : parseFloat(v);
+  };
+  const pixels = (name: string) => {
+    const v = token(name);
+    return v.endsWith("rem") ? parseFloat(v) * parseFloat(getComputedStyle(root).fontSize) : parseFloat(v);
+  };
+  /** CSS cubic-bezier() token → easing function for GSAP (core only, no plugins). */
+  const bezier = (name: string): ((t: number) => number) => {
+    const m = token(name).match(/cubic-bezier\(([^)]+)\)/);
+    if (!m) return (t) => t;
+    const [x1, y1, x2, y2] = m[1].split(",").map(Number);
+    const at = (a: number, b: number, s: number) => 3 * (1 - s) * (1 - s) * s * a + 3 * (1 - s) * s * s * b + s * s * s;
+    return (t) => {
+      if (t <= 0 || t >= 1) return t;
+      let lo = 0, hi = 1, s = t;
+      for (let i = 0; i < 24; i++) {
+        const x = at(x1, x2, s);
+        if (Math.abs(x - t) < 1e-6) break;
+        if (x < t) lo = s; else hi = s;
+        s = (lo + hi) / 2;
+      }
+      return at(y1, y2, s);
+    };
+  };
+
+  /* --------------------------------------------------------------- init */
+  function init() {
+    const hero = document.querySelector<HTMLElement>("[data-ph]");
+    if (!hero || hero.dataset.phInit === "1") return; // never initialise twice
+    hero.dataset.phInit = "1";
+
+    const disposers: Cleanup[] = [];
+    const listen = (target: EventTarget, type: string, fn: EventListener, opts?: AddEventListenerOptions) => {
+      target.addEventListener(type, fn, opts);
+      disposers.push(() => target.removeEventListener(type, fn, opts));
+    };
+
+    const light = hero.querySelector<HTMLElement>("[data-ph-light]");
+    const allItems = Array.from(hero.querySelectorAll<HTMLElement>("[data-ph-item]")).slice(0, 6);
+    let lightTween: gsap.core.Tween | null = null;
+
+    /* ---- motion (all tweens live inside this matchMedia context) ---- */
+    const mm = gsap.matchMedia();
+    mm.add(
+      { motion: "(prefers-reduced-motion: no-preference)", wide: "(min-width: 64rem)" },
+      (ctx) => {
+        const { motion, wide } = ctx.conditions as { motion: boolean; wide: boolean };
+        if (!motion) {
+          hero.classList.add("is-animated"); // final state, nothing hidden
+          return;
+        }
+        // Anything already holding keyboard focus is left visible.
+        const holdsFocus = (el: Element | null) => !!el && el.contains(document.activeElement);
+        const frameEl = hero.querySelector<HTMLElement>(wide ? "[data-ph-frame-wide]" : "[data-ph-frame-compact]");
+        const frame = holdsFocus(frameEl) ? null : frameEl;
+        const items = allItems.filter((el) => !holdsFocus(el));
+        const pan = { duration: seconds("--duration-pan"), ease: bezier("--ease-pan") };
+        const out = { duration: seconds("--duration-slow"), ease: bezier("--ease-out") };
+        const distance = pixels("--reveal-distance");
+
+        // GSAP owns the hidden state from here: set it, then lift the CSS gate.
+        if (frame) gsap.set(frame, { opacity: 0, x: -pixels("--space-7") });
+        gsap.set(items, { opacity: 0, x: distance });
+        hero.classList.add("is-animated");
+
+        const tl = gsap.timeline();
+        if (frame) tl.to(frame, { opacity: 1, x: 0, ...pan, clearProps: "transform" }, 0);
+        tl.to(items, { opacity: 1, x: 0, ...out, stagger: seconds("--reveal-stagger"), clearProps: "transform" }, 0.3);
+
+        // Light: one pass, then hold. Killed if the video starts playing.
+        if (light && !hero.classList.contains("has-video")) {
+          lightTween = gsap.fromTo(light, { x: 0 }, { x: "40vw", duration: seconds("--duration-light"), ease: "none" });
+        }
+        return () => { lightTween = null; };
+      },
+    );
+
+    /* ---- keyboard focus on an element mid-reveal finishes its reveal ---- */
+    listen(hero, "focusin", (e) => {
+      let el = (e.target as HTMLElement).closest<HTMLElement>("[data-ph-item], [data-ph-frame-wide], [data-ph-frame-compact]");
+      while (el && hero.contains(el)) {
+        gsap.killTweensOf(el);
+        gsap.set(el, { opacity: 1, x: 0, clearProps: "transform" });
+        el = el.parentElement?.closest<HTMLElement>("[data-ph-item], [data-ph-frame-wide], [data-ph-frame-compact]") ?? null;
+      }
+    });
+
+    /* ---- background video ---- */
+    const video = hero.querySelector<HTMLVideoElement>("[data-ph-video]");
+    const ctl = hero.querySelector<HTMLButtonElement>("[data-ph-videoctl]");
+    const ctlLabel = hero.querySelector<HTMLElement>("[data-ph-videoctl-label]");
+    const url = hero.dataset.videoUrl ?? "";
+    const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+
+    const setLabel = () => {
+      if (ctlLabel && video) ctlLabel.textContent = video.paused ? "Play background video" : "Pause background video";
+    };
+    const removeVideo = () => {
+      video?.remove();
+      ctl?.remove();
+    };
+
+    if (video && url && !saveData) {
+      listen(video, "error", removeVideo);
+      listen(video, "loadeddata", () => {
+        if (reduced()) {
+          video.pause();
+          video.classList.add("is-visible"); // first frame, no fade (tokens are 0.01ms)
+        }
+        if (ctl) ctl.hidden = false;
+        setLabel();
+      });
+      listen(video, "playing", () => {
+        hero.classList.add("has-video");
+        video.classList.add("is-visible");
+        lightTween?.kill();
+        setLabel();
+      }, { once: false });
+      listen(video, "pause", setLabel);
+      listen(video, "play", setLabel);
+      if (ctl) listen(ctl, "click", () => {
+        if (video.paused) video.play().catch(() => {});
+        else video.pause();
+      });
+
+      const start = () => {
+        if (!video.isConnected) return;
+        video.src = url;
+        if (reduced()) {
+          video.preload = "auto";
+          video.load();
+        } else {
+          video.play().catch(() => { /* autoplay refused: the CSS backdrop stays */ });
+        }
+      };
+      if (document.readyState === "complete") start();
+      else listen(window, "load", start, { once: true });
+    } else if (video) {
+      removeVideo();
+    }
+
+    cleanup = () => {
+      mm.revert();
+      gsap.killTweensOf(allItems);
+      if (light) gsap.killTweensOf(light);
+      disposers.forEach((d) => d());
+      if (video) {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+      }
+      delete hero.dataset.phInit;
+    };
+  }
+
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => {
+    cleanup?.();
+    cleanup = null;
+  });
+</script>

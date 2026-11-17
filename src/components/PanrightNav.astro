@@ -1,0 +1,280 @@
+---
+/**
+ * PanrightNav — sticky glass nav (page-spec.md: Nav). Rendered from Base, persists across pages.
+ */
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource/hanken-grotesk/400.css";
+import "@fontsource/hanken-grotesk/500.css";
+import logoRaw from "../assets/logo-a-c.svg?raw";
+
+// Internal links honour Astro's base (e.g. /vantis/ on GitHub Pages).
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const to = (path: string) => `${base}${path}`;
+
+const links = [
+  { href: to("/services"), label: "Services" },
+  { href: to("/about"), label: "About" },
+  { href: to("/contact"), label: "Contact" },
+];
+const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => here === href || here.startsWith(`${href}/`);
+
+// Inline the lockup: decorative inside the labelled link, sized by CSS, fill = currentColor.
+const logo = logoRaw
+  .replace(/\s(role|aria-label)="[^"]*"/g, "")
+  .replace("<svg ", '<svg aria-hidden="true" focusable="false" class="pn-logo__svg" ');
+---
+<header class="pn glass-nav" data-pn transition:persist="panright-nav">
+  <div class="pn__inner">
+    <a href={to("/")} class="pn-logo" aria-label="Panright Studios, home" set:html={logo} />
+    <nav class="pn__nav" aria-label="Primary">
+      <ul class="pn__list" role="list">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} class="pn__link" data-pn-link aria-current={isCurrent(l.href) ? "page" : undefined}>
+              <span class="pn__label">{l.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <button type="button" class="pn__link pn__menu" data-pn-toggle aria-expanded="false" aria-controls="pn-panel">
+      <span class="pn__label" data-pn-toggle-label>Menu</span>
+    </button>
+  </div>
+</header>
+
+<div id="pn-panel" class="pn-panel" data-pn-panel hidden transition:persist="panright-nav-panel">
+  <nav aria-label="Primary, mobile">
+    <ul class="pn-panel__list" role="list">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class="pn-panel__link" data-pn-link aria-current={isCurrent(l.href) ? "page" : undefined}>
+            <span class="pn__label">{l.label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<style>
+  .pn {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: var(--space-7);
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .pn *, .pn-panel * { box-sizing: border-box; }
+  .pn__inner {
+    box-sizing: border-box;
+    height: 100%;
+    max-width: calc(var(--container-max) + 2 * var(--grid-margin));
+    margin-inline: auto;
+    padding-inline: var(--grid-margin);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+  .pn-logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--space-6);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+  .pn-logo :global(.pn-logo__svg) {
+    display: block;
+    height: var(--space-4);
+    width: auto;
+    fill: currentColor;
+  }
+  .pn__list, .pn-panel__list { list-style: none; margin: 0; padding: 0; }
+  .pn__list { display: flex; gap: var(--space-5); }
+
+  .pn__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--space-6);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: var(--leading-small);
+    letter-spacing: var(--tracking-small);
+    font-weight: var(--weight-strong);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .pn__link:hover, .pn__link[aria-current="page"] { color: var(--color-text-primary); }
+
+  /* underline: draws left → right */
+  .pn__label { position: relative; }
+  .pn__label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--space-1) * -1);
+    height: var(--border-width);
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  [aria-current="page"] > .pn__label::after { transform: scaleX(1); }
+  @media (hover: hover) {
+    .pn__link:hover > .pn__label::after,
+    .pn-panel__link:hover > .pn__label::after { transform: scaleX(1); }
+  }
+  @media (hover: none) {
+    .pn__link:active > .pn__label::after,
+    .pn-panel__link:active > .pn__label::after { transform: scaleX(1); }
+  }
+
+  .pn-logo:focus-visible, .pn__link:focus-visible, .pn-panel__link:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+    border-radius: var(--radius-1);
+  }
+
+  .pn__menu { display: none; justify-content: flex-end; min-width: var(--space-6); }
+
+  /* Mobile panel: solid --color-bg, no glass */
+  .pn-panel {
+    position: fixed;
+    inset: var(--space-7) 0 0 0;
+    z-index: 19;
+    overflow-y: auto;
+    background: var(--color-bg);
+    padding: var(--space-6) var(--grid-margin);
+    font-family: var(--font-headline);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .pn-panel[hidden] { display: none; }
+  .pn-panel__list { display: grid; gap: var(--space-3); }
+  .pn-panel__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--space-6);
+    font-family: var(--font-headline);
+    font-size: var(--text-h2);
+    line-height: var(--leading-h2);
+    font-weight: var(--weight-heading);
+    font-stretch: var(--width-heading);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .pn-panel__link:hover, .pn-panel__link[aria-current="page"] { color: var(--color-text-primary); }
+
+  @media (max-width: 39.99rem) {
+    .pn__nav { display: none; }
+    .pn__menu { display: inline-flex; }
+  }
+  @media (min-width: 40rem) {
+    .pn-panel { display: none !important; }
+  }
+</style>
+
+<script>
+  // Bound once: the nav and panel persist across ClientRouter navigations.
+  const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  let open = false;
+
+  const els = () => ({
+    header: document.querySelector<HTMLElement>("[data-pn]"),
+    panel: document.querySelector<HTMLElement>("[data-pn-panel]"),
+    toggle: document.querySelector<HTMLButtonElement>("[data-pn-toggle]"),
+    label: document.querySelector<HTMLElement>("[data-pn-toggle-label]"),
+  });
+
+  function setBackgroundInert(on: boolean) {
+    const { header, panel } = els();
+    for (const el of Array.from(document.body.children)) {
+      if (el === header || el === panel || el.tagName === "SCRIPT") continue;
+      if (on) el.setAttribute("inert", "");
+      else el.removeAttribute("inert");
+    }
+  }
+
+  function openMenu() {
+    const { panel, toggle, label } = els();
+    if (!panel || !toggle) return;
+    open = true;
+    panel.hidden = false;
+    toggle.setAttribute("aria-expanded", "true");
+    if (label) label.textContent = "Close";
+    document.documentElement.style.overflow = "hidden"; // scroll lock (removed on close)
+    setBackgroundInert(true);
+    panel.querySelector<HTMLElement>("a")?.focus();
+  }
+
+  function closeMenu(returnFocus = true) {
+    const { panel, toggle, label } = els();
+    if (!open || !panel || !toggle) return;
+    open = false;
+    panel.hidden = true;
+    toggle.setAttribute("aria-expanded", "false");
+    if (label) label.textContent = "Menu";
+    document.documentElement.style.removeProperty("overflow");
+    setBackgroundInert(false);
+    if (returnFocus) toggle.focus();
+  }
+
+  document.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    if (t.closest("[data-pn-toggle]")) {
+      open ? closeMenu() : openMenu();
+    } else if (open && t.closest("[data-pn-panel] a")) {
+      closeMenu(false);
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (!open) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const { header, panel } = els();
+    const items = [header, panel]
+      .flatMap((root) => (root ? Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)) : []))
+      .filter((el) => el.offsetParent !== null);
+    if (!items.length) return;
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
+  window.matchMedia("(min-width: 40rem)").addEventListener("change", (mq) => {
+    if (mq.matches) closeMenu(false);
+  });
+
+  // Current page: update on every page load (the nav is persisted, so SSR state goes stale).
+  document.addEventListener("astro:page-load", () => {
+    const here = location.pathname.replace(/\/$/, "") || "/";
+    document.querySelectorAll<HTMLAnchorElement>("[data-pn-link]").forEach((a) => {
+      const href = (a.getAttribute("href") ?? "").replace(/\/$/, "") || "/";
+      if (here === href || here.startsWith(`${href}/`)) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+  });
+  document.addEventListener("astro:before-swap", () => closeMenu(false));
+</script>

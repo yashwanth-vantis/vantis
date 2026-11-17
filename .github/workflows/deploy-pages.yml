@@ -1,3 +1,5 @@
+# Test deployment of the Panright landing page to GitHub Pages:
+# https://yashwanth-vantis.github.io/vantis/
 name: Deploy test site to GitHub Pages
 
 on:
@@ -24,11 +26,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Build (preview, sub-path, noindex)
-        run: npm run build:preview
+      - name: Build for the /<repo>/ sub-path
+        run: npm run build
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
-          PUBLIC_NOINDEX: "true"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
