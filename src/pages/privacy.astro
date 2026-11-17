@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { seo, privacy } from "../content/site";
+---
+<Base title={seo.privacy.title} description={seo.privacy.description}>
+  <div class="prb">
+  <section class="util bg" aria-labelledby="page-title">
+    <div class="container stack-heading">
+      <h1 id="page-title" class="t-h1">{privacy.headline}</h1>
+      <p class="t-body t-muted">{privacy.body}</p>
+    </div>
+  </section>
+  </div>
+</Base>
+<style>
+  .util { padding-top: calc(var(--nav-h) + var(--space-9)); padding-bottom: var(--section-y); }
+</style>

@@ -1,0 +1,10 @@
+---
+import Base from "../layouts/Base.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { seo } from "../content/site";
+---
+<Base title={seo.contact.title} description={seo.contact.description}>
+  <div class="prb">
+  <ContactForm />
+  </div>
+</Base>

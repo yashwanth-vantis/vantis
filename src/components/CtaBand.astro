@@ -1,0 +1,23 @@
+---
+/** <CtaBand>: headline cols 1–8, button cols 10–12, baseline-aligned, top hairline. */
+import { home, cta, noWidow, link } from "../content/site";
+---
+<section class="section bg cta" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="grid cta__inner" data-reveal>
+      <h2 id="cta-title" class="t-h2 cta__title">{noWidow(home.ctaBand.headline)}</h2>
+      <p class="cta__action"><a class="btn-accent" href={link(cta.primary.href)}><span>{home.ctaBand.button}</span></a></p>
+    </div>
+  </div>
+</section>
+<style>
+  .cta__inner { border-top: var(--border-hair); padding-top: var(--space-7); row-gap: var(--space-5); align-items: last baseline; }
+  @media (min-width: 40rem) {
+    .cta__title { grid-column: 1 / span 5; }
+    .cta__action { grid-column: 6 / span 3; }
+  }
+  @media (min-width: 64rem) {
+    .cta__title { grid-column: 1 / span 8; }
+    .cta__action { grid-column: 10 / span 3; }
+  }
+</style>

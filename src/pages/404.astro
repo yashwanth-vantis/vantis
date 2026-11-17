@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+import { seo, notFound, noWidow, link } from "../content/site";
+---
+<Base title={seo.notFound.title} description={seo.notFound.description}>
+  <div class="prb">
+  <section class="util bg" aria-labelledby="page-title">
+    <div class="container stack-heading">
+      <p class="t-label">{notFound.label}</p>
+      <h1 id="page-title" class="t-h1">{noWidow(notFound.headline)}</h1>
+      <p><a class="link-draw" href={link(notFound.link.href)}><span>{notFound.link.label}</span></a></p>
+    </div>
+  </section>
+  </div>
+</Base>
+<style>
+  .util { padding-top: calc(var(--nav-h) + var(--space-9)); padding-bottom: var(--section-y); min-height: 70svh; }
+</style>

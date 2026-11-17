@@ -3,6 +3,8 @@ import "../styles/tokens.css";
 import { ClientRouter } from "astro:transitions";
 import PanrightFontPreload from "../components/PanrightFontPreload.astro";
 import PanrightNav from "../components/PanrightNav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/panright-body.css";
 
 interface Props {
   title: string;
@@ -24,6 +26,14 @@ const { title, description } = Astro.props;
   </head>
   <body>
     <PanrightNav />
-    <slot />
+    <main id="main">
+      <slot />
+    </main>
+    <div class="prb">
+      <Footer />
+    </div>
+    <script>
+      import "../scripts/panright-body";
+    </script>
   </body>
 </html>

@@ -1,6 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
 import PanrightHero from "../components/PanrightHero.astro";
+import Statement from "../components/Statement.astro";
+import Method from "../components/Method.astro";
+import PhaseGrid from "../components/PhaseGrid.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { home } from "../content/site";
 ---
 
 <Base
@@ -8,4 +13,11 @@ import PanrightHero from "../components/PanrightHero.astro";
   description="A filmmaking suite for production houses. Validate your film on the page, then carry it through prep, shoot and edit."
 >
   <PanrightHero />
+  <div class="prb">
+    <Statement id="premise" label={home.premise.label} headline={home.premise.headline} copy={home.premise.copy} />
+    <Method />
+    <PhaseGrid />
+    <Statement id="principle" variant="principle" headline={home.principle.headline} copy={home.principle.copy} />
+    <CtaBand />
+  </div>
 </Base>
